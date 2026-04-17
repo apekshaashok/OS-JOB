@@ -195,26 +195,3 @@ In our experiment, `cpu-hi` (nice 0) completes significantly more iterations per
 
 ---
 
-## 6. Scheduler Experiment Results
-
-### Setup
-
-Two containers each running `cpu_hog 20` on the same CPU:
-
-| Container | nice value | iterations (20s) |
-|-----------|-----------|-----------------|
-| cpu-hi    | 0         | ~420             |
-| cpu-lo    | 15        | ~15              |
-
-*(Fill in actual numbers from your run)*
-
-### I/O vs CPU
-
-| Container | workload  | CPU% (observed via top) |
-|-----------|-----------|------------------------|
-| alpha     | cpu_hog   | ~85%                   |
-| beta      | io_pulse  | ~5% CPU, high iowait   |
-
-*(Fill in actual numbers)*
-
-**Conclusion:** CFS correctly allocates CPU proportional to weight. The I/O-bound container does not starve the CPU-bound one — it voluntarily sleeps during I/O, so CFS can give full CPU to the CPU-bound container. When both containers are CPU-bound and priorities differ, the higher-priority container dominates throughput while the lower-priority one still makes progress (fairness guarantee of CFS).
